@@ -24,13 +24,13 @@ public class CustomerController {
 	}
 
 	@GetMapping("/{id}")
-	@ApiOperation("Find customer by id")
+	@ApiOperation("Find customer by id.")
 	public Customer findById(@PathVariable Long id) {
 		return service.findById(id);
 	}
 
 	@GetMapping
-	@ApiOperation("Find customer by filters")
+	@ApiOperation("Find customer by filters.")
 	public PageImpl<CustomerDto> findByFilter(@RequestParam(name = "name", required = false) String name,
 											  @RequestParam(name = "email", required = false) String email,
 											  @RequestParam(name = "gender", required = false) String gender,
@@ -43,6 +43,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("/{customerId}")
+	@ApiOperation("Update customer by id.")
 	public Customer updateCustomer(
 			@PathVariable Long customerId,
 			@RequestBody Customer updatedCustomer) {
@@ -50,10 +51,12 @@ public class CustomerController {
 	}
 
 	@PostMapping
+	@ApiOperation("Create customer.")
 	public Customer createCustomer(@RequestBody Customer customer) {
 		return service.createCustomer(customer);
 	}
 
+	@ApiOperation("Delete customer by id.")
 	@DeleteMapping("/{customerId}")
 	public void deleteCustomer(@PathVariable Long customerId) {
 		service.deleteCustomer(customerId);

@@ -1,7 +1,6 @@
 package com.example.api.service;
 
 import com.example.api.dto.CustomerDto;
-import com.example.api.entity.Address;
 import com.example.api.entity.Customer;
 import com.example.api.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,6 @@ public class CustomerServiceTest {
         CriteriaBuilder cb = mock(CriteriaBuilder.class);
         CriteriaQuery<Customer> cq = mock(CriteriaQuery.class);
         Root<Customer> root = mock(Root.class);
-        Join<Customer, Address> joinAddress = mock(Join.class);
         TypedQuery<Customer> query = mock(TypedQuery.class);
         Pageable pageable = mock(Pageable.class);
         CriteriaQuery<Long> countQuery = mock(CriteriaQuery.class);
@@ -54,39 +52,35 @@ public class CustomerServiceTest {
         when(cq.from(Customer.class)).thenReturn(root);
         when(root.join("addresses", JoinType.LEFT)).thenReturn(mock(Join.class));
         when(entityManager.createQuery(any(CriteriaQuery.class))).thenReturn(query);
-        when(query.getResultList()).thenReturn(Arrays.asList(createMockCustomer()));
         when(pageable.getOffset()).thenReturn(0L);
         when(pageable.getPageSize()).thenReturn(0);
         when(countQuery.select(cb.count(countQuery.from(Customer.class)))).thenReturn(countQuery);
-        when( entityManager.createQuery(countQuery).getSingleResult()).thenReturn(1L);
+        when(entityManager.createQuery(countQuery).getSingleResult()).thenReturn(1L);
+        when(query.getResultList()).thenReturn(customerList);
 
-        // Chama o método a ser testado
-        Page<CustomerDto> result = customerService.findCustomersByFilters("John", "john@example.com", "Male", "City", "State", pageable);
+        Page<CustomerDto> result = customerService.findCustomersByFilters("Maria", null, "F", null, null, pageable);
 
-        // Verifica se o método retornou um Page contendo um CustomerDto
         assert !result.isEmpty();
         assert result.getContent().get(0) instanceof CustomerDto;
 
         assertEquals(1, result.getTotalElements());
         assertEquals(1, result.getTotalPages());
-        assertEquals(1, result.getContent().size());
+        assertEquals(2, result.getContent().size());
 
     }
 
     private List<Customer> createMockCustomers() {
         Customer customer1 = new Customer();
         customer1.setId(1L);
-        customer1.setName("John Doe");
-        customer1.setEmail("john@example.com");
-        customer1.setGender("Male");
+        customer1.setName("Maria Julia Silva");
+        customer1.setEmail("Maria@gmail.com");
+        customer1.setGender("F");
 
         Customer customer2 = new Customer();
         customer2.setId(2L);
-        customer2.setName("Jane Doe");
-        customer2.setEmail("jane@example.com");
-        customer2.setGender("Female");
-
-        // Adicione outros campos conforme necessário
+        customer2.setName("Maria Carolina Santos");
+        customer2.setEmail("MariaC@gmail.com");
+        customer2.setGender("F");
 
         return Arrays.asList(customer1, customer2);
     }

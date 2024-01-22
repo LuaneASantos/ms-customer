@@ -9,8 +9,6 @@ import com.example.api.response.ViaCEPResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-
 @Service
 public class AddressService {
 
@@ -30,7 +28,6 @@ public class AddressService {
         this.addAddressToCustomer(customer, viaCEPResponse, request);
 
     }
-
 
     public void addAddressToCustomer(Customer customer, ViaCEPResponse viaCEPResponse, AddressRequest request) {
 
